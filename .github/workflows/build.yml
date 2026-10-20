@@ -1,0 +1,28 @@
+yaml
+
+
+name: Build Windows EXE
+
+on:
+  workflow_dispatch
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compile
+        shell: pwsh
+        run: |
+          $compiler = Get-Command g++ -ErrorAction SilentlyContinue
+          if (-not $compiler) {
+            choco install mingw -y --no-progress
+          }
+          g++ loader.cpp -std=c++17 -O2 -static -static-libgcc -static-libstdc++ -o CS2Loader.exe
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CS2Loader-Windows
+          path: CS2Loader.exe
