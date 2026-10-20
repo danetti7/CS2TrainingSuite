@@ -1,14 +1,10 @@
 yaml
 
 
-name: Teste de compilacao
-
-on:
-  workflow_dispatch:
+name: Teste
 
 jobs:
   test:
     runs-on: windows-latest
     steps:
-      - name: Testar workflow
-        run: echo "Workflow valido"
+      - run: echo "YAML OK"
